@@ -1,4 +1,4 @@
-# Documentation
+# K8s build + dockerised documentation
 
 Build
 -
@@ -43,3 +43,12 @@ $ ctr -n=k8s.io images import archiveName.tar.gz
 6. Show your images\
 $crictl images -a\
 You can notice that your "kube-apiserver: v1.24.2_yourName" is pressent.
+
+# Bitbucket documentation
+
+Preparing
+-
+
+1. Fork the master
+2. yes2
+3. 
