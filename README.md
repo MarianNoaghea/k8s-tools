@@ -52,3 +52,47 @@ Preparing
 1. Fork the master
 2. yes2
 3. 
+
+# Logging in Kubernetes
+
+Hello, folks! In today's tutorial, I will show you how to add to kubelet the --log-file option.
+Let's get started!
+I will present the commands, along with the related explanations.
+
+
+Steps
+-
+
+1. **Explanation** : Switch to sudo user \
+   **Command**: *sudo su*
+
+2.  **Explanation**: Open the file from the path: /etc/systemd/system/ kubelet.service.d/10-kubeadm.conf \
+                 Use your favourite text editor. \
+    **Command**: *vim /etc/systemd/system/kubelet.service.d/10-kubeadm.conf*
+
+3.  **Explanation**: In the opened file, you will see two lines including the keyword "Environment". \
+                 You cand add the string "--log-file=/tmp/kubelet.log -v=8" at the end of any of this two lines. \
+                 I added it at the end of the second line. \
+                 The log messages can be seen in the file from the path /tmp/kubelet.log. If you prefer a different location,
+                 feel free to put the log messages where you want. \ The -v option shows the verbose mod, which means the level of complexity. \
+                 For this level, 8 is the maximum value.
+
+    **Command**: *In vim, press i.*
+
+    **Example**: Environment="KUBELET_CONFIG_ARGS=--config=/var/lib/kubelet/config.yaml --hostname-override=ixia-k8s --log-file=/tmp/kubelet.log -v=8"
+
+4.  **Explanation**: Save the changes you have made and exit. \
+    **Command**: *In vim, press Esc and :wq.*
+
+5.  **Explanation**: Reload daemon. \
+    **Command**: *systemctl daemon-reload*
+
+6.  **Explanation**: Restart kubelet to update the changes. \
+    **Command**: *systemctl restart kubelet*
+
+7.  **Explanation**: Check the kubelet status to see if it's in active mod. \
+    **Command**: *systemctl status kubelet.*
+
+8.  **Explanation**: To see the messages between the kubernetes components, press the command below. \
+    **Command**: *journalctl -u kubelet*
+
