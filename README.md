@@ -148,8 +148,8 @@ $ ./kubernetes/_output/dockerized/bin/linux/amd64/kube-apiserver --advertise-add
 
     * Run the VSCode debugger
 
-Atentie !
+Atention !
 -
-Cand mutam fisieul: kube-apiserver.yaml
-consecinta: clusterul nu va mai merge, kubectl get nodes, kubectl get pods\
-Va trebui sa mutam inapoi fisierul pentru a functiona dinnou
+When we move the file: kube-apiserver.yaml
+The clusterul won't work anymore, kubectl get nodes, kubectl get pods\
+We will need to move the kube-apiserver.yaml file back at its place.
