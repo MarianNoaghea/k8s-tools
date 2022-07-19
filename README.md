@@ -44,15 +44,6 @@ $ ctr -n=k8s.io images import archiveName.tar.gz
 $crictl images -a\
 You can notice that your "kube-apiserver: v1.24.2_yourName" is pressent.
 
-# Bitbucket documentation
-
-Preparing
--
-
-1. Fork the master
-2. yes2
-3. 
-
 # Logging in Kubernetes
 
 Hello, folks! In today's tutorial, I will show you how to add to kubelet the --log-file option.
