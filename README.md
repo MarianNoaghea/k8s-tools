@@ -44,15 +44,6 @@ $ ctr -n=k8s.io images import archiveName.tar.gz
 $crictl images -a\
 You can notice that your "kube-apiserver: v1.24.2_yourName" is pressent.
 
-# Bitbucket documentation
-
-Preparing
--
-
-1. Fork the master
-2. yes2
-3. 
-
 # Logging in Kubernetes
 
 Hello, folks! In today's tutorial, I will show you how to add to kubelet the --log-file option.
@@ -96,3 +87,69 @@ Steps
 8.  **Explanation**: To see the messages between the kubernetes components, press the command below. \
     **Command**: *journalctl -u kubelet*
 
+
+# Debugg kube-apiserver
+
+Prepare enviroment
+-
+
+1. Move kube-apiserver.yaml for debugging:\
+/etc/kubernetes/manifest/kube-apiserver.yaml -> /etc/kubernetes/kube-apiserver.yaml
+2. In /kubernetes/.vscode directory create the folowing files
+    * launch.json
+    ```json
+    {
+        "version": "0.2.0",
+        "configurations": [
+            {
+                "name": "Attach remote process",
+                "type": "go",
+                "request": "attach",
+                "mode": "remote",
+                "port": 2345,
+                "host": "127.0.0.1",
+                "apiVersion": 2,
+                "showLog": true
+            }
+        ],
+    }
+    ```
+
+    * settings.json
+    ```json
+    {
+        "go.alternateTools": {
+            "dlv": "${workspaceFolder}/.vscode/dlv-sudo.sh"
+        }
+    }
+    ```
+
+    * dlv-sudo.sh
+    ```sh
+    #!/bin/sh
+    if ! which dlv ; then
+        PATH="${GOPATH}/bin:$PATH"
+    fi
+    if [ "$DEBUG_AS_ROOT" = "true" ]; then
+        DLV=$(which dlv)
+        exec sudo "$DLV" --only-same-user=false "$@"
+    else
+        exec dlv "$@"
+    fi
+    ```
+3. 3) run the kube-apiserver process\
+$ ./kubernetes/_output/dockerized/bin/linux/amd64/kube-apiserver --advertise-address=10.0.2.15 --allow-privileged=true --authorization-mode=Node,RBAC --client-ca-file=/etc/kubernetes/pki/ca.crt --enable-admission-plugins=NodeRestriction --enable-bootstrap-token-auth=true --etcd-cafile=/etc/kubernetes/pki/etcd/ca.crt --etcd-certfile=/etc/kubernetes/pki/apiserver-etcd-client.crt --etcd-keyfile=/etc/kubernetes/pki/apiserver-etcd-client.key --etcd-servers=https://127.0.0.1:2379 --kubelet-client-certificate=/etc/kubernetes/pki/apiserver-kubelet-client.crt --kubelet-client-key=/etc/kubernetes/pki/apiserver-kubelet-client.key --kubelet-preferred-address-types=InternalIP,ExternalIP,Hostname --proxy-client-cert-file=/etc/kubernetes/pki/front-proxy-client.crt --proxy-client-key-file=/etc/kubernetes/pki/front-proxy-client.key --requestheader-allowed-names=front-proxy-client --requestheader-client-ca-file=/etc/kubernetes/pki/front-proxy-ca.crt --requestheader-extra-headers-prefix=X-Remote-Extra- --requestheader-group-headers=X-Remote-Group --requestheader-username-headers=X-Remote-User --secure-port=6443 --service-account-issuer=https://kubernetes.default.svc.cluster.local --service-account-key-file=/etc/kubernetes/pki/sa.pub --service-account-signing-key-file=/etc/kubernetes/pki/sa.key --service-cluster-ip-range=10.96.0.0/12 --tls-cert-file=/etc/kubernetes/pki/apiserver.crt --tls-private-key-file=/etc/kubernetes/pki/apiserver.key -v=8
+
+4. Attach to the process:\
+    * Get the PID\
+    $ ps -ef | grep -v grep | grep kube-apiserver | awk '{print $2}' | sed -n '2 p'
+
+    * AS ROOT: $ sudo dlv attach PID ./docker/kube-apiserver --headless --listen=0.0.0.0:2345 --log --api-version 2
+
+    * Run the VSCode debugger
+
+Atention !
+-
+When we move the file: kube-apiserver.yaml
+The clusterul won't work anymore, kubectl get nodes, kubectl get pods\
+We will need to move the kube-apiserver.yaml file back at its place.
