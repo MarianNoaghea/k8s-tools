@@ -8,14 +8,7 @@ import (
 	"strings"
 )
 
-func getIsolCPUs() []int {
-	content, err := ioutil.ReadFile("/proc/cmdline")
-
-	if err != nil {
-		log.Fatal(err)
-	}
-
-	str1 := string(content)
+func GetIsolCPUs(str1 string) []int {
 
 	// rm last \n if is pressent
 	if str1[len(str1)-1] == '\n' {
@@ -53,6 +46,7 @@ func getIsolCPUs() []int {
 
 			if e != nil {
 				fmt.Println("Something went wrong2")
+				return []int{}
 			}
 
 			coreStop, e := strconv.Atoi(strings.SplitAfter(element, "-")[1])
@@ -68,9 +62,19 @@ func getIsolCPUs() []int {
 	}
 
 	return isolCores
-
 }
 
 func main() {
-	fmt.Println(getIsolCPUs())
+	// path := "/proc/cmdline"
+	path := "input2"
+
+	content, err := ioutil.ReadFile(path)
+
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	str1 := string(content)
+
+	fmt.Println(GetIsolCPUs(str1))
 }
