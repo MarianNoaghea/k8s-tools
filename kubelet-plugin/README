@@ -1,2 +1,11 @@
 Explaining for scripts:
 
+The same dynamic as in 'go-plugin' directory, first we build the plugin with
+'build-plugin-locally-and-place-it.sh'
+then we move the .so library in /usr/bin/
+after this we build kubelet locally with same flags as the plugin using
+'build-kubelet-locally-for-plugin.sh'
+DISCLAIMER: when you try to compile with (make all WHAT=cmd/kubelet GOFLAGS=-v DBG=1) because of that DBG=1 everything won't work, I think there are somme
+flags that don't match.
+After building we rung using
+'run-kube-locally.sh'
