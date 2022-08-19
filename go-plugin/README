@@ -1,0 +1,30 @@
+Files hierarchy
+.
+├── common
+│   ├── common.go
+│   └── go.mod
+├── demo1
+│   ├── go.mod
+│   ├── go.sum
+│   ├── main
+│   ├── main.go
+│   └── Makefile
+└── demo1-plugins
+    ├── go.mod
+    ├── go.sum
+    ├── Makefile
+    ├── plugin1.go
+    └── plugin1.so
+
+demo1-plugins:
+    cd demo1-plugins
+    if you want to make some changes in plugin1.so first you need to write somme code in plugin1.go and then make
+demo1:
+    cd demo1
+    from main.go you "call" functions from plugin, you somehow Lookup in the plugin1.so binary file to find the functions pointers
+    make will build and run the main.go code and as you cand obsserve we sent a CPUSet to the plugin1.so function, the funcion printed
+    the values received and changed the CPUSet by value
+common:
+    this is a very important thing, common.go is a common file that helps the plugin and the main program to call the same structures and
+    functions.
+    as I found on stackoverflow (which I found later that is not a good practice) the common file needs to be in somme git path
