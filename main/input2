@@ -1,1 +1,1 @@
-BOOT_IMAGE=/boot/vmlinuz-5.15.0-41-generic root=UUID=484f5b5d-8372-4855-84e5-3967bd55ad35 ro quiet splash isolcpus=3-5
+BOOT_IMAGE=/boot/vmlinuz-5.15.0-41-generic isolcpus=3-5,6 root=UUID=484f5b5d-8372-4855-84e5-3967bd55ad35 ro quiet splash 

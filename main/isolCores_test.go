@@ -37,11 +37,15 @@ func TestIsolCores(t *testing.T) {
 			expCPUs:     []int{},
 			fileContent: "BOOT_IMAGE=/boot/vmlinuz-5.15.0-41-generic root=UUID=484f5b5d-8372-4855-84e5-3967bd55ad35 ro quiet splash",
 		},
-
 		{
-			description: "no isoled CPUs",
+			description: "many isoled CPUs",
 			expCPUs:     []int{3, 4, 5, 6, 7, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30},
 			fileContent: "BOOT_IMAGE=/boot/vmlinuz-5.15.0-41-generic root=UUID=484f5b5d-8372-4855-84e5-3967bd55ad35 ro quiet splash isolcpus=3,4,5-7,10-30",
+		},
+		{
+			description: "isoled CPUs declared in between",
+			expCPUs:     []int{3, 4, 5, 7},
+			fileContent: "BOOT_IMAGE=/boot/vmlinuz-5.15.0-41-generic isolcpus=3-5,7 root=UUID=484f5b5d-8372-4855-84e5-3967bd55ad35 ro quiet splash ",
 		},
 	}
 
