@@ -1,0 +1,1 @@
+sudo /usr/bin/kubelet --cpu-manager-policy=static --kube-reserved=cpu=1 --system-reserved=cpu=2 --bootstrap-kubeconfig=/etc/kubernetes/bootstrap-kubelet.conf --kubeconfig=/etc/kubernetes/kubelet.conf --config=/var/lib/kubelet/config.yaml --container-runtime=remote --container-runtime-endpoint=unix:///run/containerd/containerd.sock --pod-infra-container-image=k8s.gcr.io/pause:3.7
