@@ -17,6 +17,8 @@ type MyInterface interface {
 	M1()
 }
 
+func changeSet(comm.NewCPUSetInt64)
+
 func DoMagicWithPlugin(pluginPath string) error {
 	p, err := plugin.Open(pluginPath)
 	if err != nil {
