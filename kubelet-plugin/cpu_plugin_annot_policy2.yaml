@@ -3,7 +3,7 @@ kind: Pod
 metadata:
  name: cpu-demo
  annotations:
-    policy: "policy2"
+    container.cpupolicy.alpha.kubernetes.io: "policy2"
 spec:
  containers:
  - name: cpu-demo-ctr

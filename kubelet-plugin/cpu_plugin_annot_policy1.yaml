@@ -3,17 +3,17 @@ kind: Pod
 metadata:
  name: cpu-demo
  annotations:
-    policy: "policy1"
+    container.cpupolicy.alpha.kubernetes.io: "policy1"
 spec:
  containers:
  - name: cpu-demo-ctr
    image: vish/stress
    resources:
      limits:
-       cpu: 3000m
+       cpu: 1000m
        memory: "256M"
      requests:
-       cpu: 3000m
+       cpu: 1000m
        memory: "256M"
    args:
    - -cpus
